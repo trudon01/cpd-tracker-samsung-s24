@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 📱 CPD Tracker - Samsung S24 Edition
 
 A professional Continuing Professional Development (CPD) tracking application optimized for Samsung S24 devices with advanced OCR text recognition capabilities.
@@ -212,3 +213,6 @@ For Samsung S24 specific issues or general support:
 ---
 
 **Built with ❤️ for Samsung S24 users who value professional development tracking**
+=======
+# cpd-tracker-samsung-s24
+>>>>>>> 2422a3de40647fd605284fc72d9b043e156ea657
