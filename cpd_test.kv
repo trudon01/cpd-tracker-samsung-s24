@@ -1,0 +1,29 @@
+# Samsung S24 CPD Tracker - Minimal KV Layout for Testing
+
+<CPDScreen>:
+    name: 'cpd'
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+        
+        Label:
+            text: '📱 Samsung S24 CPD Tracker'
+            font_size: '24sp'
+            size_hint_y: None
+            height: 80
+            color: 0.2, 0.4, 0.8, 1
+            
+        Button:
+            text: '🧪 Test Samsung S24 Features'
+            size_hint_y: None  
+            height: 60
+            font_size: '18sp'
+            background_color: 0.2, 0.6, 1, 1
+            on_release: root.test_function()
+            
+        Label:
+            text: '✅ Ready for Samsung S24\n🔄 Building test version...'
+            font_size: '16sp'
+            halign: 'center'
