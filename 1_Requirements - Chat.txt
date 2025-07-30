@@ -1,0 +1,13 @@
+I want to create an android app in VSC and python, called CPD tracker. I want it to have the ability for me to add an entry with the following details:
+
+Date: [current]
+Date Start : [user defined]
+Date End: [User defined]
+Name: [User defined]
+Type: [Scrollable list of: Paper, Conference, Project, Course, Other]
+Other: [ user able to enter long sentence with explanation]
+Photo: [User able to take a photo]
+
+The app must create a database that is updated (and backsup every 2 weeks with a copy) after every entry. The database must be stored on google drive with title "CPD points", inside must be a zipped folder for each backup, that includes the photos. 
+
+The interface must look professional. Please help me detailed generate a VSC code script that I can run, that includes all instructions Github Copilot would need to get it setup and running. 

@@ -1,0 +1,23 @@
+# Core Kivy and KivyMD
+kivy>=2.1.0
+kivymd>=1.1.1
+
+# Google Drive API
+google-api-python-client>=2.70.0
+google-auth>=2.15.0
+google-auth-oauthlib>=0.7.0
+google-auth-httplib2>=0.1.0
+
+# OCR functionality
+pytesseract>=3.10.1
+pillow>=9.0.0
+
+# Additional dependencies for mobile development
+plyer>=2.1.0
+pyjnius>=1.4.2; platform_system=="Linux"
+
+# For building Android APK
+buildozer>=1.4.0
+
+# Optional: For better camera support
+opencv-python>=4.7.0

@@ -1,0 +1,359 @@
+#:kivy 2.0
+
+ScreenManager:
+    CPDScreen:
+
+<CPDScreen>:
+    name: "cpd"
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1  # White background
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        bar_width: "12dp"
+        scroll_type: ["bars", "content"]
+        
+        # Main container - S24 optimized
+        BoxLayout:
+            orientation: "vertical"
+            padding: "15dp", "20dp", "15dp", "30dp"
+            spacing: "25dp"
+            size_hint_y: None
+            height: self.minimum_height + dp(300)
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1  # Solid white background
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            
+            # Header
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: "120dp"
+                spacing: "15dp"
+                
+                Label:
+                    text: "CPD Activity Entry"
+                    color: 0.2, 0.4, 0.8, 1
+                    font_size: "34sp"
+                    bold: True
+                    halign: "center"
+                    size_hint_y: None
+                    height: "70dp"
+                    text_size: self.size
+                    
+                Widget:
+                    size_hint_y: None
+                    height: "35dp"
+                
+            # Date Section
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: "200dp"
+                spacing: "20dp"
+                canvas.before:
+                    Color:
+                        rgba: 0.95, 0.95, 0.95, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                
+                Label:
+                    text: "📅 Activity Dates"
+                    color: 0.2, 0.4, 0.8, 1
+                    font_size: "26sp"
+                    bold: True
+                    halign: "left"
+                    size_hint_y: None
+                    height: "50dp"
+                    text_size: self.size
+                    
+                # Start Date Row
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint_y: None
+                    height: "75dp"
+                    spacing: "15dp"
+                    
+                    Label:
+                        text: "Start:"
+                        color: 0.3, 0.3, 0.3, 1
+                        font_size: "22sp"
+                        size_hint_x: 0.2
+                        halign: "left"
+                        valign: "center"
+                        text_size: self.size
+                        
+                    Button:
+                        id: date_start_btn
+                        text: "📅 Select Start Date"
+                        background_color: 0.9, 0.9, 0.9, 1
+                        color: 0.2, 0.2, 0.2, 1
+                        font_size: "19sp"
+                        size_hint_x: 0.8
+                        on_release: root.show_date_picker("start")
+                        
+                # End Date Row
+                BoxLayout:
+                    orientation: "horizontal"
+                    size_hint_y: None
+                    height: "75dp"
+                    spacing: "15dp"
+                    
+                    Label:
+                        text: "End:"
+                        color: 0.3, 0.3, 0.3, 1
+                        font_size: "22sp"
+                        size_hint_x: 0.2
+                        halign: "left"
+                        valign: "center"
+                        text_size: self.size
+                        
+                    Button:
+                        id: date_end_btn
+                        text: "📅 Select End Date"
+                        background_color: 0.9, 0.9, 0.9, 1
+                        color: 0.2, 0.2, 0.2, 1
+                        font_size: "19sp"
+                        size_hint_x: 0.8
+                        on_release: root.show_date_picker("end")
+                        
+            # Activity Details Section
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: "160dp"
+                spacing: "20dp"
+                canvas.before:
+                    Color:
+                        rgba: 0.95, 0.95, 0.95, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                
+                Label:
+                    text: "📝 Activity Details"
+                    color: 0.2, 0.4, 0.8, 1
+                    font_size: "26sp"
+                    bold: True
+                    halign: "left"
+                    size_hint_y: None
+                    height: "50dp"
+                    text_size: self.size
+                    
+                TextInput:
+                    id: name
+                    hint_text: "Activity Name"
+                    multiline: False
+                    font_size: "22sp"
+                    size_hint_y: None
+                    height: "90dp"
+                    padding: [20, 25]
+                    
+            # Type Selection
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: "270dp"
+                spacing: "20dp"
+                canvas.before:
+                    Color:
+                        rgba: 0.95, 0.95, 0.95, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                
+                Label:
+                    text: "🏷️ Activity Type"
+                    color: 0.2, 0.4, 0.8, 1
+                    font_size: "26sp"
+                    bold: True
+                    halign: "left"
+                    size_hint_y: None
+                    height: "50dp"
+                    text_size: self.size
+            
+                # First row of type buttons
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: "15dp"
+                    size_hint_y: None
+                    height: "80dp"
+                    
+                    Button:
+                        id: type_paper
+                        text: "📄 Paper"
+                        font_size: "20sp"
+                        on_release: root.select_type("Paper")
+                        
+                    Button:
+                        id: type_conference
+                        text: "🎯 Conference"
+                        font_size: "20sp"
+                        on_release: root.select_type("Conference")
+                        
+                    Button:
+                        id: type_project
+                        text: "💼 Project"
+                        font_size: "20sp"
+                        on_release: root.select_type("Project")
+                
+                # Second row of type buttons
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: "15dp"
+                    size_hint_y: None
+                    height: "80dp"
+                    
+                    Button:
+                        id: type_course
+                        text: "🎓 Course"
+                        font_size: "20sp"
+                        on_release: root.select_type("Course")
+                        
+                    Button:
+                        id: type_other
+                        text: "📋 Other"
+                        font_size: "20sp"
+                        on_release: root.select_type("Other")
+                        
+                    Widget:  # Spacer
+                
+                # Selection status
+                Label:
+                    id: selected_type
+                    text: "No type selected"
+                    color: 0.6, 0.6, 0.6, 1
+                    font_size: "20sp"
+                    halign: "center"
+                    size_hint_y: None
+                    height: "60dp"
+                    text_size: self.size
+                    
+            # Description
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: "220dp"
+                spacing: "20dp"
+                canvas.before:
+                    Color:
+                        rgba: 0.95, 0.95, 0.95, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                
+                Label:
+                    text: "📋 Description / Other Details"
+                    color: 0.2, 0.4, 0.8, 1
+                    font_size: "26sp"
+                    bold: True
+                    halign: "left"
+                    size_hint_y: None
+                    height: "50dp"
+                    text_size: self.size
+                    
+                TextInput:
+                    id: description
+                    hint_text: "Provide detailed information about the activity..."
+                    multiline: True
+                    font_size: "18sp"
+                    size_hint_y: None
+                    height: "150dp"
+                    padding: [15, 15]
+                    
+            # Photo Section
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: "160dp"
+                spacing: "20dp"
+                canvas.before:
+                    Color:
+                        rgba: 0.95, 0.95, 0.95, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                
+                Label:
+                    text: "📷 Photo Evidence"
+                    color: 0.2, 0.4, 0.8, 1
+                    font_size: "26sp"
+                    bold: True
+                    halign: "left"
+                    size_hint_y: None
+                    height: "50dp"
+                    text_size: self.size
+                    
+                BoxLayout:
+                    orientation: "horizontal"
+                    spacing: "15dp"
+                    size_hint_y: None
+                    height: "90dp"
+                    
+                    Button:
+                        text: "📷 Take Photo"
+                        font_size: "20sp"
+                        background_color: 0.3, 0.7, 0.3, 1
+                        on_release: root.take_photo()
+                        size_hint_x: 0.6
+                        
+                    Label:
+                        id: photo_status
+                        text: "No photo taken"
+                        color: 0.6, 0.6, 0.6, 1
+                        font_size: "16sp"
+                        size_hint_x: 0.4
+                        halign: "left"
+                        valign: "center"
+                        text_size: self.size
+                        
+            # Action Buttons
+            BoxLayout:
+                orientation: "horizontal"
+                spacing: "25dp"
+                size_hint_y: None
+                height: "100dp"
+                padding: [0, "30dp", 0, 0]
+                
+                Button:
+                    text: "🗑️ Clear Form"
+                    font_size: "20sp"
+                    background_color: 0.8, 0.4, 0.4, 1
+                    on_release: root.clear_form()
+                    size_hint_x: 0.45
+                    
+                Widget:
+                    size_hint_x: 0.1
+                    
+                Button:
+                    text: "✅ Submit Entry"
+                    font_size: "20sp"
+                    background_color: 0.2, 0.6, 0.2, 1
+                    on_release: root.submit_entry()
+                    size_hint_x: 0.45
+                    
+            # Status
+            Label:
+                id: status
+                text: ""
+                color: 0.2, 0.6, 0.2, 1
+                font_size: "20sp"
+                bold: True
+                halign: "center"
+                size_hint_y: None
+                height: "60dp"
+                text_size: self.size
+                
+            # Bottom spacer
+            Widget:
+                size_hint_y: None
+                height: "80dp"

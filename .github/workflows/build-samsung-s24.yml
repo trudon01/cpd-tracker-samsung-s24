@@ -1,0 +1,210 @@
+name: Build Samsung S24 APK
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📱 Checkout Samsung S24 CPD Tracker
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Setup Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: ☕ Setup Java JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: 📦 Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          
+    - name: 📦 Cache buildozer global directory
+      uses: actions/cache@v3
+      with:
+        path: .buildozer_global
+        key: ${{ runner.os }}-buildozer-global-${{ hashFiles('buildozer.spec') }}
+        restore-keys: |
+          ${{ runner.os }}-buildozer-global-
+          
+    - name: 📦 Cache buildozer directory
+      uses: actions/cache@v3
+      with:
+        path: .buildozer
+        key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
+        restore-keys: |
+          ${{ runner.os }}-buildozer-
+          
+    - name: 🔧 Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+        sudo apt-get install -y build-essential libltdl-dev libffi-dev libssl-dev python3-dev
+        
+    - name: 🔧 Install Tesseract OCR for Samsung S24
+      run: |
+        sudo apt-get install -y tesseract-ocr tesseract-ocr-eng
+        echo "Tesseract installed for Samsung S24 OCR functionality"
+        
+    - name: 🐍 Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install buildozer cython==3.0.10
+        pip install kivy kivymd plyer
+        pip install pytesseract pillow
+        pip install google-api-python-client google-auth google-auth-oauthlib google-auth-httplib2
+        
+    - name: 🛠️ Setup buildozer for Samsung S24
+      run: |
+        # Create buildozer global cache directory
+        mkdir -p .buildozer_global
+        export BUILDOZER_GLOBAL_PATH=$(pwd)/.buildozer_global
+        
+        # Verify buildozer.spec is Samsung S24 optimized
+        echo "Building APK optimized for Samsung S24 (1080x2340, ARM64-v8a, armeabi-v7a)"
+        cat buildozer.spec | grep -E "(archs|api|resolution)"
+        
+    - name: 🏗️ Build Samsung S24 APK with OCR
+      run: |
+        export BUILDOZER_GLOBAL_PATH=$(pwd)/.buildozer_global
+        echo "🚀 Starting Samsung S24 APK build with OCR functionality..."
+        echo "📱 Target: Samsung S24, S24+, S24 Ultra"
+        echo "🔍 Features: OCR, Camera, Google Drive, CPD Tracking"
+        
+        # Build the APK
+        buildozer android debug
+        
+        # Verify APK was created
+        if [ -f bin/*.apk ]; then
+          echo "✅ Samsung S24 APK build successful!"
+          ls -la bin/
+        else
+          echo "❌ APK build failed"
+          exit 1
+        fi
+        
+    - name: 📱 Rename APK for Samsung S24
+      run: |
+        cd bin
+        # Find the generated APK and rename it
+        APK_FILE=$(ls *.apk | head -n 1)
+        if [ ! -z "$APK_FILE" ]; then
+          NEW_NAME="CPD_Tracker_Samsung_S24_v1.0_$(date +%Y%m%d_%H%M%S).apk"
+          mv "$APK_FILE" "$NEW_NAME"
+          echo "📱 APK renamed to: $NEW_NAME"
+          echo "APK_NAME=$NEW_NAME" >> $GITHUB_ENV
+        fi
+        
+    - name: 📊 APK Information
+      run: |
+        cd bin
+        APK_FILE=$(ls *.apk | head -n 1)
+        if [ ! -z "$APK_FILE" ]; then
+          echo "📱 Samsung S24 APK Details:"
+          echo "📁 File: $APK_FILE"
+          echo "📏 Size: $(du -h "$APK_FILE" | cut -f1)"
+          echo "🗓️ Built: $(date)"
+          echo ""
+          echo "🎯 Samsung S24 Optimizations:"
+          echo "  ✅ Resolution: 1080x2340"
+          echo "  ✅ Architecture: ARM64-v8a, armeabi-v7a"
+          echo "  ✅ Android API: 21-31"
+          echo "  ✅ OCR: Tesseract engine included"
+          echo "  ✅ Permissions: Camera, Storage, Internet"
+          echo ""
+          echo "📋 App Features:"
+          echo "  📸 Samsung Camera Integration"
+          echo "  🔍 OCR Text Recognition"
+          echo "  📊 CPD Points Tracking"
+          echo "  ☁️ Google Drive Sync"
+          echo "  🎨 Material Design UI"
+        fi
+        
+    - name: 🎉 Upload Samsung S24 APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: CPD-Tracker-Samsung-S24-APK
+        path: bin/*.apk
+        retention-days: 30
+        
+    - name: 📦 Create Release Package
+      run: |
+        mkdir -p release_package
+        cp bin/*.apk release_package/
+        cp buildozer.spec release_package/
+        cp requirements.txt release_package/
+        
+        # Create installation guide
+        cat > release_package/SAMSUNG_S24_INSTALL.md << 'EOF'
+        # 📱 Samsung S24 Installation Guide
+        
+        ## Quick Install
+        1. **Download APK** to your Samsung S24
+        2. **Enable Unknown Sources**: Settings → Apps → Special access → Install unknown apps
+        3. **Install APK**: Tap the APK file and select Install
+        4. **Grant Permissions**: Allow camera and storage access
+        5. **Launch**: Find "CPD Tracker" in your app drawer
+        
+        ## Features
+        - 📸 **Samsung S24 Camera**: Optimized for 1080x2340 resolution
+        - 🔍 **OCR Text Recognition**: Extract text from certificates
+        - 📊 **CPD Points Tracking**: Automatic calculation
+        - ☁️ **Google Drive Sync**: Cloud backup
+        - 🎨 **Material Design**: Samsung One UI compatible
+        
+        ## System Requirements
+        - Samsung S24, S24+, or S24 Ultra
+        - Android 5.0+ (API 21+)
+        - 100MB storage space
+        - Camera and internet permissions
+        EOF
+        
+        # Create build info
+        cat > release_package/BUILD_INFO.txt << EOF
+        CPD Tracker - Samsung S24 Build Information
+        ==========================================
+        
+        Build Date: $(date)
+        Target Device: Samsung S24 series
+        Android API: 21-31
+        Architecture: ARM64-v8a, armeabi-v7a
+        Resolution: 1080x2340 optimized
+        
+        Features Included:
+        ✅ OCR Text Recognition (Tesseract)
+        ✅ Samsung Camera Integration
+        ✅ CPD Points Tracking
+        ✅ Google Drive Synchronization
+        ✅ Material Design UI
+        ✅ Database with Backup
+        ✅ CSV Export Functionality
+        
+        Build Environment:
+        - Python 3.9
+        - Kivy 2.3.1
+        - Buildozer (latest)
+        - Ubuntu 22.04 LTS
+        - OpenJDK 17
+        EOF
+        
+    - name: 📦 Upload Release Package
+      uses: actions/upload-artifact@v4
+      with:
+        name: CPD-Tracker-Samsung-S24-Complete-Package
+        path: release_package/
+        retention-days: 90

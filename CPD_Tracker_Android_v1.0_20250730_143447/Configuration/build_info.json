@@ -1,0 +1,36 @@
+{
+  "app_name": "CPD Tracker",
+  "version": "1.0.0",
+  "build_date": "2025-07-30T14:34:48.307220",
+  "python_version": "3.9.5 (tags/v3.9.5:0a7dcbd, May  3 2021, 17:27:52) [MSC v.1928 64 bit (AMD64)]",
+  "features": [
+    "CPD Activity Tracking",
+    "OCR Text Extraction",
+    "Google Drive Sync",
+    "CSV Export",
+    "Points System",
+    "Samsung S24 Optimization",
+    "SQLite Database",
+    "Material Design UI"
+  ],
+  "requirements": [
+    "python3",
+    "kivy==2.3.1",
+    "kivymd>=1.1.1",
+    "plyer",
+    "google-api-python-client",
+    "google-auth",
+    "google-auth-oauthlib",
+    "google-auth-httplib2",
+    "pytesseract",
+    "pillow",
+    "pyjnius"
+  ],
+  "android_permissions": [
+    "CAMERA",
+    "WRITE_EXTERNAL_STORAGE",
+    "READ_EXTERNAL_STORAGE",
+    "INTERNET",
+    "ACCESS_NETWORK_STATE"
+  ]
+}

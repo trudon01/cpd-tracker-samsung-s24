@@ -1,0 +1,62 @@
+Creating a **CPD Tracker Android app** using **Python** and **Visual Studio Code (VSC)** is a great idea, and it's definitely achievable using **Kivy** or **BeeWare** for the UI, **SQLite** for local storage, and **Google Drive API** for cloud backup.
+
+Here’s a **step-by-step breakdown** of what we’ll do:
+
+---
+
+## 🧰 Tools & Libraries Needed
+
+1. **Python 3.10+**
+2. **Kivy** – for building the Android UI
+3. **Buildozer** – to compile the app for Android
+4. **SQLite** – for local database
+5. **Google Drive API** – for cloud backup
+6. **Pillow** – for image handling
+7. **Zipfile** – for backup zipping
+8. **Cron or Scheduled Task** – for biweekly backup (handled in app logic)
+
+---
+
+## 📁 App Features
+
+- Add CPD entry with:
+  - Current date
+  - Start and end date
+  - Name
+  - Type (dropdown)
+  - Description
+  - Photo (camera or gallery)
+- Save to local SQLite DB
+- Backup every 2 weeks to Google Drive (zipped with photos)
+- Professional UI using KivyMD
+
+---
+
+## 🧑‍💻 Project Structure
+
+```
+cpd_tracker/
+├── main.py
+├── cpd.kv
+├── database.py
+├── backup.py
+├── drive_upload.py
+├── assets/
+│   └── photos/
+├── backups/
+│   └── [zipped folders]
+├── requirements.txt
+└── buildozer.spec
+```
+
+---
+
+## ✅ Let's Start: Step-by-Step Code Generation
+
+Would you like me to:
+
+1. **Generate the full code base** (starting with `main.py`, `cpd.kv`, and `database.py`)?
+2. **Create a zipped folder with all files** ready to open in VSC?
+3. **Include instructions for setting up Buildozer and deploying to Android?**
+
+Let me know how you'd like to proceed — I can generate the code and package it for you, or walk you through each part interactively.
