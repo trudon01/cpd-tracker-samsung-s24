@@ -1,0 +1,46 @@
+name: Debug Build Issues
+
+on:
+  workflow_dispatch:
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Check environment
+      run: |
+        echo "=== Environment Check ==="
+        python3 --version
+        java -version
+        echo "=== Available space ==="
+        df -h
+        echo "=== Memory ==="
+        free -h
+        echo "=== CPU ==="
+        nproc
+        
+    - name: Install minimal deps
+      run: |
+        sudo apt update
+        sudo apt install -y python3-pip
+        pip3 install buildozer
+        
+    - name: Test buildozer
+      run: |
+        echo "=== Buildozer version ==="
+        buildozer version
+        echo "=== Buildozer help ==="
+        buildozer --help
+        
+    - name: Create test spec
+      run: |
+        buildozer init
+        cat buildozer.spec
+        
+    - name: Test basic Android setup
+      run: |
+        buildozer android debug 2>&1 | head -50 || true
